@@ -22,8 +22,7 @@ var Word = function(myWord) {
 	this.makeLetters = function() {
 		for (i=0; i < this.letters.length; i++){
 			this.letters[i] = new Letter (this.letters[i]);
-            console.log(this.letters[i].showLetter());
-        
+			console.log(this.letters[i].showLetter());
 		}
 	}
 }

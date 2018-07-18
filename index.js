@@ -94,7 +94,7 @@ function guessLetter() {
             {
                 name: "letter",
                 message: "Guess any letter:",
-                validate: function (value) {
+                validate: function(value) {
                     if (isLetter(value)) {
                         return true;
                     } else {
@@ -102,56 +102,61 @@ function guessLetter() {
                     }
                 }
             }
-        ]).then(function (guess) {
+        ]).then(function(guess) {
+            //Convert all letters guessed by the user to upper case.
             guess.letter.toUpperCase();
             console.log("You guessed: " + guess.letter.toUpperCase());
-            userGuess = false;
+            userGuessedCorrectly = false;
+            //figures out if the letter has already been guessed
             if (lettersGuessedArr.indexOf(guess.letter.toUpperCase()) > -1) {
-                console.log("You already guessed that letter. Try again.");
-                console.log("------------------------------------");
+                console.log("You already gueesed that etter guess again");
+                console.log("-------------------------------");
                 guessLetter();
-            } else if (lettersGuessedArr.indexOf(guess.letter.toUpperCase()) === -1) {
+            }
+        
+            //If user enters a new letter
+            else if (lettersGuessedArr.indexOf(guess.letter.toUpperCase()) === -1) {
                 lettersGuessed = lettersGuessed.concat(" " + guess.letter.toUpperCase());
                 lettersGuessedArr.push(guess.letter.toUpperCase());
-
-                console.log("letters that you have guessed: " + lettersGuessed);
-
-//loops through all the letters and compares it t the letter guessed
-                console.log("someWord.letters.length" + someWord.letters.length);
-                for (i = 0; i < someWord.letters.length; i++) {
-                    userGuess = false;
-                    console.log(someWord.letters[i].character + " " + someWord.letters[i].letterGuessed + " " +  guess.letter.toUpperCase());
-                    if(guess.letter === someWord.letters[i].character && someWord.letters[i].letterGuessed === false) {
-                        someWord.letters[i].letterGuessed === true;
-                        userGuess = true;
-                        someWord.underscore[i] = guess.letter.toUpperCase();
+                //Shows the letters to the user that they alread guessed
+                console.log('Letters already guessed: ') + lettersGuessed, {padding: 1};
+        
+                //loops through word to see if the user guess matches any letters in the word
+                for (i=0; i < someWord.letters.length; i++) {
+                    if (guess.letter.toUpperCase() === someWord.letters[i].character && someWord.letters[i].letterGuessedCorrectly === false) {
+                        someWord.letters[i].letterGuessedCorrectly === true;
+                        userGuessedCorrectly = true;
+                        someWord.underscores[i] = guess.letter.toUpperCase();
                         filledIn++;
-                        console.log("userGuess" + userGuess);
-                        console.log("Correct");
-                        if(userGuess) {
-                            console.log("Correct!");
-                            checkIfWon();
-                        // }else {
-                        //     console.log("Incorrect!");
-                        //     guessesLeft--;
-                        //     checkIfWon();
-                        }
-                    }
-                    else{
-                        console.log("Incorrect");
-                        guessLetter();
-                        
                     }
                 }
-                console.log("Word to guess:");
+                console.log("WORD TO GUESS:");
                 someWord.splitWord();
                 someWord.makeLetters();
-
+        
+                if (userGuessedCorrectly) {
+                    //lets the user know they got a letter or letters right
+                    console.log('CORRECT!');
+                    console.log("=====================================================================");
+                    checkIfWon();
+                }
+        
+                else {
+                    //lets the user know they got no letters in the word
+                    console.log('INCORRECT!');
+                    guessesLeft--;
+                    console.log("You have " + guessesLeft + " guesses left.");
+                    console.log("=====================================================================");
+                    checkIfWon();
+                }
             }
         });
-    }
-}
-//Checks if the user won or lost the game after each letter that is guessed
+        }
+        }
+        
+        
+
+// Checks if the user won or lost the game after each letter that is guessed
 function checkIfWon() {
     if(guessesLeft === 0) {
         console.log("----------------------------------");
@@ -198,3 +203,55 @@ function reset() {
         }
     });
 }
+
+
+//         .then(function(guess) {
+//             guess.letter.toUpperCase();
+//             console.log("You guessed: " + guess.letter.toUpperCase());
+//             userGuess = false;
+//             if (lettersGuessedArr.indexOf(guess.letter.toUpperCase()) > -1) {
+//                 console.log("You already guessed that letter. Try again.");
+//                 console.log("------------------------------------");
+//                 guessLetter();
+//             } else if (lettersGuessedArr.indexOf(guess.letter.toUpperCase()) === -1) {
+//                 lettersGuessed = lettersGuessed.concat(" " + guess.letter.toUpperCase());
+//                 lettersGuessedArr.push(guess.letter.toUpperCase());
+
+//                 console.log("letters that you have guessed: " + lettersGuessed);
+
+// //loops through all the letters and compares it t the letter guessed
+//                 console.log("someWord.letters.length" + someWord.letters.length);
+//                 for (i = 0; i < someWord.letters.length; i++) {
+//                     // userGuess = false;
+//                     // console.log(someWord.letters[i].character + " " + someWord.letters[i].letterGuessed + " " +  guess.letter.toUpperCase());
+//                     if(guess.letter === someWord.letters[i].character && someWord.letters[i].letterGuessedCorrectly === false) {
+//                         someWord.letters[i].letterGuessedCorrectly === true;
+//                         userGuess = true;
+//                         someWord.underscore[i] = guess.letter.toUpperCase();
+//                         filledIn++;
+//                         console.log("userGuess" + userGuess);
+//                         console.log("Correct");
+//                         if(userGuess) {
+//                             console.log("Correct!");
+//                             checkIfWon();
+//                         }else {
+//                             console.log("Incorrect!");
+//                             guessesLeft--;
+//                             checkIfWon();
+//                         }
+//                         guessLetter();
+//                     }
+//                     else{
+//                         console.log("Incorrect");
+//                         guessLetter();
+                        
+//                     }
+//                 }
+//                 console.log("Word to guess:");
+//                 someWord.splitWord();
+//                 someWord.makeLetters();
+
+//             }
+//         });
+//     }
+// }
